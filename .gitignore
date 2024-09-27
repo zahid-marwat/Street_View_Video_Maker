@@ -1,0 +1,7 @@
+*.mp4
+*.MP4
+__pycache__/
+
+.vscode/settings.json
+Data/
+API_Keys.py
