@@ -1,14 +1,13 @@
 import cv2
 import os
 import math
-from urllib.request import urlretrieve, urlopen
+from urllib.request import urlretrieve
 
 
 def get_sv_img(apikey_streetview, lat_lon, filename="image", savepath='PHOTO_FOLDER', picsize="640x640", heading=0, pitch=0, fov=100, verbose=False):
     base = "https://maps.googleapis.com/maps/api/streetview"
     lat_lon_str = f"{lat_lon[0]},{lat_lon[1]}"
     url = (f"{base}?size={picsize}&location={lat_lon_str}&heading={heading}&pitch={pitch}&fov={fov}&key={apikey_streetview}")
-
     if verbose:
         print(url)
 
@@ -31,7 +30,7 @@ def calculate_angle(point1, point2):
     a = math.sin(lat2 / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
-    # distance between the points
+    # distance between the points in KM
     distance = 6371 * c
 
     # Get angle using the law of cosines
@@ -41,28 +40,28 @@ def calculate_angle(point1, point2):
 
 def get_video(Frames_dir,vid_path,fps):
 
-    frame_folder = Frames_dir
-    output_video = vid_path
+	frame_folder = Frames_dir
+	output_video = vid_path
 
-    # Get the list of frames and sort them
-    frames = [os.path.join(frame_folder, img) for img in os.listdir(frame_folder) if img.endswith('.jpg')]
-    frames.sort()  # Ensure they are in the correct order
+	# Get the list of frames and sort them
+	frames = [os.path.join(frame_folder, img) for img in os.listdir(frame_folder) if img.endswith('.jpg')]
+	frames.sort()  # Ensure they are in the correct order
 
-    # Read the first frame to get the width and height
-    first_frame = cv2.imread(frames[0])
-    height, width, layers = first_frame.shape
+	# Read the first frame to get the width and height
+	first_frame = cv2.imread(frames[0])
+	height, width, layers = first_frame.shape
 
-    # Define the codec and create a VideoWriter object
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # For .mp4 files
-    video_writer = cv2.VideoWriter(output_video, fourcc, fps, (width, height))
+	# Define the codec and create a VideoWriter object
+	fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # For .mp4 files
+	video_writer = cv2.VideoWriter(output_video, fourcc, fps, (width, height))
 
-    # Write each frame to the video
-    for frame in frames:
-        image = cv2.imread(frame)
-        video_writer.write(image)
+	# Write each frame to the video
+	for frame in frames:
+	    image = cv2.imread(frame)
+	    video_writer.write(image)
 
-    video_writer.release()
-    cv2.destroyAllWindows()
+	video_writer.release()
+	cv2.destroyAllWindows()
 
 
 
@@ -77,3 +76,8 @@ def haversine(coord1, coord2):
     distance = R * c * 5280  # Convert miles to feet
     return distance
 
+
+
+def extract_segments(csv_file):
+
+	return segments_list
